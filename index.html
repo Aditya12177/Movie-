@@ -111,18 +111,41 @@
 
 <!-- Dynamic Movie Loading -->
 <script>
-    fetch('movies.json') // Fetch movie data from JSON file in the same directory
-        .then(response => response.json())
-        .then(data => {
-            const movieList = document.getElementById('movie-list');
-            movieList.innerHTML = data.map(movie => `
+    fetch('movies.json')
+    .then(response => response.json())
+    .then(data => {
+        const movieList = document.getElementById('movie-list');
+
+        // Default me sirf 5 movies show karo
+        const defaultMovies = data.slice(0, 5);
+        renderMovies(defaultMovies);
+
+        // Search ya filter karne par saari movies ko consider karo
+        const allMovies = data;
+
+        document.getElementById("search-bar").addEventListener("keyup", () => {
+            const query = document.getElementById("search-bar").value.toLowerCase();
+            const filteredMovies = allMovies.filter(movie => movie.title.toLowerCase().includes(query));
+            renderMovies(filteredMovies);
+        });
+
+        document.getElementById("genre-filter").addEventListener("change", () => {
+            const genre = document.getElementById("genre-filter").value;
+            const filteredMovies = genre === "all" ? allMovies : allMovies.filter(movie => movie.genre === genre);
+            renderMovies(filteredMovies);
+        });
+
+        function renderMovies(movies) {
+            movieList.innerHTML = movies.map(movie => `
                 <li data-genre="${movie.genre}">
                     <img src="${movie.image || 'https://via.placeholder.com/50x75'}" alt="${movie.title}">
                     <a href="${movie.link}" target="_blank">${movie.title}</a>
                 </li>
             `).join('');
-        })
-        .catch(err => console.error("Error loading movie data:", err));
+        }
+    })
+    .catch(err => console.error("Error loading movie data:", err));
+    
 
     function searchMovies() {
         const query = document.getElementById("search-bar").value.toLowerCase();
