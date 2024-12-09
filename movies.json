@@ -1,142 +1,212 @@
-[
-    {
-        "title": "Inception",
-        "genre": "action",
-        "link": "https://example.com/inception-download",
-        "image": "https://raw.githubusercontent.com/Aditya12177/Image/main/468032279_18472676566063583_8644975811972097347_n.jpg",
-        "size": "1.5 GB"
-    },
-    {
-        "title": "The Dark Knight",
-        "genre": "action",
-        "link": "https://example.com/the-dark-knight-download",
-        "image": "https://via.placeholder.com/50x75",
-        "size": "2.1 GB"
-    },
-    {
-        "title": "Titanic",
-        "genre": "romance",
-        "link": "https://example.com/titanic-download",
-        "image": "https://via.placeholder.com/50x75",
-        "size": "1.9 GB"
-    },
-    {
-        "title": "The Hangover",
-        "genre": "comedy",
-        "link": "https://example.com/the-hangover-download",
-        "image": "https://via.placeholder.com/50x75",
-        "size": "1.3 GB"
-    },
-    {
-        "title": "Conjuring",
-        "genre": "horror",
-        "link": "https://example.com/conjuring-download",
-        "image": "https://via.placeholder.com/50x75",
-        "size": "1.1 GB"
-    },
-    {
-        "title": "Avengers: Endgame",
-        "genre": "action",
-        "link": "https://example.com/avengers-download",
-        "image": "https://via.placeholder.com/50x75",
-        "size": "3.0 GB"
-    },
-    {
-        "title": "Interstellar",
-        "genre": "sci-fi",
-        "link": "https://example.com/interstellar-download",
-        "image": "https://via.placeholder.com/50x75",
-        "size": "2.6 GB"
-    },
-    {
-        "title": "Frozen",
-        "genre": "animation",
-        "link": "https://example.com/frozen-download",
-        "image": "https://via.placeholder.com/50x75",
-        "size": "900 MB"
-    },
-    {
-        "title": "Joker",
-        "genre": "drama",
-        "link": "https://example.com/joker-download",
-        "image": "https://via.placeholder.com/50x75",
-        "size": "1.4 GB"
-    },
-    {
-        "title": "Toy Story",
-        "genre": "animation",
-        "link": "https://example.com/toy-story-download",
-        "image": "https://via.placeholder.com/50x75",
-        "size": "750 MB"
-    },
-    {
-        "title": "Spider-Man: No Way Home",
-        "genre": "action",
-        "link": "https://example.com/spider-man-download",
-        "image": "https://via.placeholder.com/50x75",
-        "size": "2.5 GB"
-    },
-    {
-        "title": "Shrek",
-        "genre": "animation",
-        "link": "https://example.com/shrek-download",
-        "image": "https://via.placeholder.com/50x75",
-        "size": "700 MB"
-    },
-    {
-        "title": "The Matrix",
-        "genre": "sci-fi",
-        "link": "https://example.com/the-matrix-download",
-        "image": "https://via.placeholder.com/50x75",
-        "size": "1.8 GB"
-    },
-    {
-        "title": "The Godfather",
-        "genre": "drama",
-        "link": "https://example.com/the-godfather-download",
-        "image": "https://via.placeholder.com/50x75",
-        "size": "1.6 GB"
-    },
-    {
-        "title": "Jurassic Park",
-        "genre": "sci-fi",
-        "link": "https://example.com/jurassic-park-download",
-        "image": "https://via.placeholder.com/50x75",
-        "size": "1.7 GB"
-    },
-    {
-        "title": "The Lion King",
-        "genre": "animation",
-        "link": "https://example.com/the-lion-king-download",
-        "image": "https://via.placeholder.com/50x75",
-        "size": "850 MB"
-    },
-    {
-        "title": "Harry Potter",
-        "genre": "fantasy",
-        "link": "https://example.com/harry-potter-download",
-        "image": "https://via.placeholder.com/50x75",
-        "size": "2.2 GB"
-    },
-    {
-        "title": "Finding Nemo",
-        "genre": "animation",
-        "link": "https://example.com/finding-nemo-download",
-        "image": "https://via.placeholder.com/50x75",
-        "size": "1.0 GB"
-    },
-    {
-        "title": "Parasite",
-        "genre": "thriller",
-        "link": "https://example.com/parasite-download",
-        "image": "https://via.placeholder.com/50x75",
-        "size": "1.5 GB"
-    },
-    {
-        "title": "Deadpool",
-        "genre": "comedy",
-        "link": "https://example.com/deadpool-download",
-        "image": "https://via.placeholder.com/50x75",
-        "size": "1.8 GB"
-    }
-]
+{
+    "movies": [
+        {
+            "title": "Inception",
+            "genre": "Action",
+            "link": "https://example.com/inception-download",
+            "image": "https://raw.githubusercontent.com/Aditya12177/Image/main/inception.jpg",
+            "size": "700MB"
+        },
+        {
+            "title": "The Hangover",
+            "genre": "Comedy",
+            "link": "https://example.com/hangover-download",
+            "image": "https://raw.githubusercontent.com/Aditya12177/Image/main/hangover.jpg",
+            "size": "1.2GB"
+        },
+        {
+            "title": "The Dark Knight",
+            "genre": "Action",
+            "link": "https://example.com/dark-knight-download",
+            "image": "https://raw.githubusercontent.com/Aditya12177/Image/main/darkknight.jpg",
+            "size": "1.5GB"
+        },
+        {
+            "title": "Avengers: Endgame",
+            "genre": "Action",
+            "link": "https://example.com/avengers-endgame-download",
+            "image": "https://raw.githubusercontent.com/Aditya12177/Image/main/avengers.jpg",
+            "size": "2.1GB"
+        },
+        {
+            "title": "The Matrix",
+            "genre": "Sci-Fi",
+            "link": "https://example.com/matrix-download",
+            "image": "https://raw.githubusercontent.com/Aditya12177/Image/main/matrix.jpg",
+            "size": "1.3GB"
+        },
+        {
+            "title": "Fight Club",
+            "genre": "Drama",
+            "link": "https://example.com/fight-club-download",
+            "image": "https://raw.githubusercontent.com/Aditya12177/Image/main/fightclub.jpg",
+            "size": "900MB"
+        },
+        {
+            "title": "Titanic",
+            "genre": "Romance",
+            "link": "https://example.com/titanic-download",
+            "image": "https://raw.githubusercontent.com/Aditya12177/Image/main/titanic.jpg",
+            "size": "1.4GB"
+        },
+        {
+            "title": "Spider-Man: No Way Home",
+            "genre": "Action",
+            "link": "https://example.com/spiderman-no-way-home-download",
+            "image": "https://raw.githubusercontent.com/Aditya12177/Image/main/spiderman.jpg",
+            "size": "1.8GB"
+        },
+        {
+            "title": "Joker",
+            "genre": "Drama",
+            "link": "https://example.com/joker-download",
+            "image": "https://raw.githubusercontent.com/Aditya12177/Image/main/joker.jpg",
+            "size": "1.2GB"
+        },
+        {
+            "title": "The Lion King",
+            "genre": "Animation",
+            "link": "https://example.com/lion-king-download",
+            "image": "https://raw.githubusercontent.com/Aditya12177/Image/main/lionking.jpg",
+            "size": "850MB"
+        },
+        {
+            "title": "Interstellar",
+            "genre": "Sci-Fi",
+            "link": "https://example.com/interstellar-download",
+            "image": "https://raw.githubusercontent.com/Aditya12177/Image/main/interstellar.jpg",
+            "size": "2.2GB"
+        },
+        {
+            "title": "Frozen",
+            "genre": "Animation",
+            "link": "https://example.com/frozen-download",
+            "image": "https://raw.githubusercontent.com/Aditya12177/Image/main/frozen.jpg",
+            "size": "1.1GB"
+        },
+        {
+            "title": "Guardians of the Galaxy",
+            "genre": "Action",
+            "link": "https://example.com/guardians-galaxy-download",
+            "image": "https://raw.githubusercontent.com/Aditya12177/Image/main/guardiansgalaxy.jpg",
+            "size": "1.5GB"
+        },
+        {
+            "title": "Deadpool",
+            "genre": "Action",
+            "link": "https://example.com/deadpool-download",
+            "image": "https://raw.githubusercontent.com/Aditya12177/Image/main/deadpool.jpg",
+            "size": "1.6GB"
+        },
+        {
+            "title": "Shutter Island",
+            "genre": "Mystery",
+            "link": "https://example.com/shutter-island-download",
+            "image": "https://raw.githubusercontent.com/Aditya12177/Image/main/shutterisland.jpg",
+            "size": "1.4GB"
+        },
+        {
+            "title": "Mad Max: Fury Road",
+            "genre": "Action",
+            "link": "https://example.com/mad-max-download",
+            "image": "https://raw.githubusercontent.com/Aditya12177/Image/main/madmax.jpg",
+            "size": "1.9GB"
+        },
+        {
+            "title": "The Godfather",
+            "genre": "Drama",
+            "link": "https://example.com/godfather-download",
+            "image": "https://raw.githubusercontent.com/Aditya12177/Image/main/godfather.jpg",
+            "size": "2.0GB"
+        },
+        {
+            "title": "Schindler's List",
+            "genre": "Drama",
+            "link": "https://example.com/schindlers-list-download",
+            "image": "https://raw.githubusercontent.com/Aditya12177/Image/main/schindlerslist.jpg",
+            "size": "2.1GB"
+        },
+        {
+            "title": "The Prestige",
+            "genre": "Drama",
+            "link": "https://example.com/prestige-download",
+            "image": "https://raw.githubusercontent.com/Aditya12177/Image/main/prestige.jpg",
+            "size": "1.4GB"
+        },
+        {
+            "title": "The Shawshank Redemption",
+            "genre": "Drama",
+            "link": "https://example.com/shawshank-download",
+            "image": "https://raw.githubusercontent.com/Aditya12177/Image/main/shawshank.jpg",
+            "size": "1.8GB"
+        },
+        {
+            "title": "Forrest Gump",
+            "genre": "Drama",
+            "link": "https://example.com/forrest-gump-download",
+            "image": "https://raw.githubusercontent.com/Aditya12177/Image/main/forrestgump.jpg",
+            "size": "1.2GB"
+        },
+        {
+            "title": "The Revenant",
+            "genre": "Adventure",
+            "link": "https://example.com/revenant-download",
+            "image": "https://raw.githubusercontent.com/Aditya12177/Image/main/revenant.jpg",
+            "size": "1.9GB"
+        },
+        {
+            "title": "The Wolf of Wall Street",
+            "genre": "Comedy",
+            "link": "https://example.com/wolf-wall-street-download",
+            "image": "https://raw.githubusercontent.com/Aditya12177/Image/main/wolfwallstreet.jpg",
+            "size": "2.0GB"
+        },
+        {
+            "title": "La La Land",
+            "genre": "Romance",
+            "link": "https://example.com/lala-land-download",
+            "image": "https://raw.githubusercontent.com/Aditya12177/Image/main/lalaland.jpg",
+            "size": "1.5GB"
+        },
+        {
+            "title": "The Social Network",
+            "genre": "Drama",
+            "link": "https://example.com/social-network-download",
+            "image": "https://raw.githubusercontent.com/Aditya12177/Image/main/socialnetwork.jpg",
+            "size": "1.2GB"
+        }
+    ],
+    "webseries": [
+        {
+            "title": "Stranger Things",
+            "genre": "Sci-Fi",
+            "link": "https://example.com/stranger-things-download",
+            "image": "https://raw.githubusercontent.com/Aditya12177/Image/main/strangerthings.jpg",
+            "episodes": [
+                { "title": "Episode 1", "link": "https://example.com/stranger-things-episode1" },
+                { "title": "Episode 2", "link": "https://example.com/stranger-things-episode2" },
+                { "title": "Episode 3", "link": "https://example.com/stranger-things-episode3" },
+                { "title": "Episode 4", "link": "https://example.com/stranger-things-episode4" },
+                { "title": "Episode 5", "link": "https://example.com/stranger-things-episode5" },
+                { "title": "Episode 6", "link": "https://example.com/stranger-things-episode6" },
+                { "title": "Episode 7", "link": "https://example.com/stranger-things-episode7" }
+            ]
+        },
+        {
+            "title": "Breaking Bad",
+            "genre": "Drama",
+            "link": "https://example.com/breaking-bad-download",
+            "image": "https://raw.githubusercontent.com/Aditya12177/Image/main/breakingbad.jpg",
+            "episodes": [
+                { "title": "Pilot", "link": "https://example.com/breaking-bad-pilot" },
+                { "title": "Episode 2", "link": "https://example.com/breaking-bad-episode2" },
+                { "title": "Episode 3", "link": "https://example.com/breaking-bad-episode3" },
+                { "title": "Episode 4", "link": "https://example.com/breaking-bad-episode4" },
+                { "title": "Episode 5", "link": "https://example.com/breaking-bad-episode5" },
+                { "title": "Episode 6", "link": "https://example.com/breaking-bad-episode6" },
+                { "title": "Episode 7", "link": "https://example.com/breaking-bad-episode7" }
+            ]
+        }
+    ]
+        }
+            
