@@ -36,16 +36,6 @@
             color: #333;
         }
 
-        header select {
-            margin-left: 10px;
-            padding: 10px;
-            border: none;
-            border-radius: 25px;
-            font-size: 16px;
-            background-color: #FF69B4;
-            color: #fff;
-        }
-
         .container {
             padding: 20px;
         }
@@ -63,7 +53,6 @@
             background-color: #2980B9;
             border-radius: 10px;
             transition: transform 0.3s, background-color 0.3s;
-            cursor: pointer;
         }
 
         .movie-list li:hover {
@@ -87,63 +76,6 @@
         .movie-list li a:hover {
             text-decoration: underline;
         }
-
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            justify-content: center;
-            align-items: center;
-            z-index: 1001;
-        }
-
-        .modal-content {
-            background-color: #fff;
-            color: #333;
-            padding: 20px;
-            border-radius: 10px;
-            width: 400px;
-            max-width: 90%;
-            text-align: center;
-            position: relative;
-        }
-
-        .modal-content h2 {
-            margin-top: 0;
-        }
-
-        .modal-content button {
-            background-color: #FF69B4;
-            color: #fff;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .modal-content button:hover {
-            background-color: #FF1493;
-        }
-
-        .close-modal {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: none;
-            border: none;
-            font-size: 18px;
-            cursor: pointer;
-            color: #333;
-        }
-
-        .close-modal:hover {
-            color: #FF69B4;
-        }
     </style>
 </head>
 <body>
@@ -151,75 +83,50 @@
 <header>
     <h1>Movie Search</h1>
     <input type="text" id="search-bar" placeholder="Search for a movie..." onkeyup="searchMovies()">
-    <select id="genre-filter" onchange="filterByGenre()">
-        <option value="all">All Genres</option>
-        <option value="action">Action</option>
-        <option value="comedy">Comedy</option>
-        <option value="horror">Horror</option>
-    </select>
 </header>
 
 <div class="container">
     <ul class="movie-list" id="movie-list"></ul>
 </div>
 
-<!-- Modal -->
-<div class="modal" id="movie-modal">
-    <div class="modal-content">
-        <button class="close-modal" onclick="closeModal()">X</button>
-        <h2 id="modal-title">Movie Title</h2>
-        <p id="modal-details">Details about the movie will go here.</p>
-        <p id="modal-size">File Size: Unknown</p>
-        <button id="download-button" onclick="downloadMovie()">Download</button>
-    </div>
-</div>
-
 <script>
-    fetch('movies.json')
-    .then(response => response.json())
-    .then(data => {
-        const movieList = document.getElementById('movie-list');
-        const modal = document.getElementById('movie-modal');
-        const modalTitle = document.getElementById('modal-title');
-        const modalDetails = document.getElementById('modal-details');
-        const modalSize = document.getElementById('modal-size');
-        const downloadButton = document.getElementById('download-button');
+    let allMovies = []; // To hold all movies from the JSON
+    const defaultMovieCount = 5; // Number of movies to display by default
 
-        function renderMovies(movies) {
-            movieList.innerHTML = movies.map((movie, index) => `
-                <li onclick="showMovieDetails(${index})">
+    // Fetch movies from the JSON file
+    fetch('movies.json')
+        .then(response => response.json())
+        .then(data => {
+            allMovies = data; // Save all movies for later use
+            renderMovies(allMovies.slice(0, defaultMovieCount)); // Show only the first 5 movies
+        })
+        .catch(err => console.error("Error loading movie data:", err));
+
+    // Function to render movies
+    function renderMovies(movies) {
+        const movieList = document.getElementById('movie-list');
+        if (movies.length === 0) {
+            movieList.innerHTML = "<p>No movies found.</p>";
+        } else {
+            movieList.innerHTML = movies.map(movie => `
+                <li>
                     <img src="${movie.image || 'https://via.placeholder.com/50x75'}" alt="${movie.title}">
-                    <a href="javascript:void(0)">${movie.title}</a>
+                    <a href="${movie.link}" target="_blank">${movie.title}</a>
                 </li>
             `).join('');
         }
+    }
 
-        function showMovieDetails(index) {
-            const movie = data[index];
-            modalTitle.textContent = movie.title;
-            modalDetails.textContent = `Genre: ${movie.genre}`;
-            modalSize.textContent = `File Size: Unknown`; // Adjust this if your JSON has file sizes
-            downloadButton.setAttribute('data-link', movie.link);
-            modal.style.display = "flex";
+    // Function to filter and display movies based on search
+    function searchMovies() {
+        const query = document.getElementById('search-bar').value.toLowerCase();
+        if (query === "") {
+            renderMovies(allMovies.slice(0, defaultMovieCount)); // Show default 5 movies if search is empty
+        } else {
+            const filteredMovies = allMovies.filter(movie => movie.title.toLowerCase().includes(query));
+            renderMovies(filteredMovies); // Show matching movies only
         }
-
-        function closeModal() {
-            modal.style.display = "none";
-        }
-
-        function downloadMovie() {
-            const link = downloadButton.getAttribute('data-link');
-            window.open(link, "_blank");
-        }
-
-        renderMovies(data);
-
-        // Make these functions global
-        window.showMovieDetails = showMovieDetails;
-        window.closeModal = closeModal;
-        window.downloadMovie = downloadMovie;
-    })
-    .catch(err => console.error("Error loading movie data:", err));
+    }
 </script>
 
 </body>
