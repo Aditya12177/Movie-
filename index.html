@@ -10,15 +10,15 @@
             font-family: 'Poppins', Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #FFB6C1, #FF69B4); /* Soft pink gradient */
-            color: #fff; /* White text for readability */
+            background: linear-gradient(135deg, #FFB6C1, #FF69B4);
+            color: #fff;
             transition: background-color 0.5s, color 0.5s;
         }
 
         header {
             padding: 20px;
             text-align: center;
-            background-color: #2C3E50; /* Dark blue-grey for header */
+            background-color: #2C3E50;
             position: sticky;
             top: 0;
             z-index: 1000;
@@ -32,9 +32,8 @@
             border-radius: 25px;
             font-size: 16px;
             outline: none;
-            transition: all 0.3s ease-in-out;
-            background-color: #fff; /* White background for input */
-            color: #333; /* Dark text for input */
+            background-color: #fff;
+            color: #333;
         }
 
         header select {
@@ -43,9 +42,8 @@
             border: none;
             border-radius: 25px;
             font-size: 16px;
-            outline: none;
-            background-color: #FF69B4; /* Vibrant pink for select dropdown */
-            color: #fff; /* White text */
+            background-color: #FF69B4;
+            color: #fff;
         }
 
         .container {
@@ -55,7 +53,6 @@
         .movie-list {
             list-style: none;
             padding: 0;
-            display: block;
         }
 
         .movie-list li {
@@ -63,13 +60,14 @@
             align-items: center;
             padding: 10px 20px;
             margin: 10px 0;
-            background-color: #2980B9; /* Bright blue for movie items */
+            background-color: #2980B9;
             border-radius: 10px;
-            transition: transform 0.3s ease, background-color 0.3s ease;
+            transition: transform 0.3s, background-color 0.3s;
+            cursor: pointer;
         }
 
         .movie-list li:hover {
-            background-color: #FF69B4; /* Hover effect with pink */
+            background-color: #FF69B4;
             transform: scale(1.05);
         }
 
@@ -82,24 +80,69 @@
 
         .movie-list li a {
             font-weight: bold;
-            color: #fff; /* White text for movie names */
-            text-decoration: none; /* Remove underline */
-            cursor: pointer;
+            color: #fff;
+            text-decoration: none;
         }
 
         .movie-list li a:hover {
-            text-decoration: underline; /* Underline effect on hover */
+            text-decoration: underline;
         }
 
-        .toggle-dark-mode {
-            margin-top: 10px;
-            cursor: pointer;
-            font-size: 14px;
-            background: #FF69B4; /* Bright pink button */
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            width: 400px;
+            max-width: 90%;
+            text-align: center;
+            position: relative;
+        }
+
+        .modal-content h2 {
+            margin-top: 0;
+        }
+
+        .modal-content button {
+            background-color: #FF69B4;
             color: #fff;
-            border: none;
             padding: 10px;
+            border: none;
             border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .modal-content button:hover {
+            background-color: #FF1493;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .close-modal:hover {
+            color: #FF69B4;
         }
     </style>
 </head>
@@ -114,79 +157,59 @@
         <option value="comedy">Comedy</option>
         <option value="horror">Horror</option>
     </select>
-    <button class="toggle-dark-mode" onclick="toggleDarkMode()">Toggle Dark Mode</button>
 </header>
 
 <div class="container">
     <ul class="movie-list" id="movie-list"></ul>
 </div>
 
-<!-- Dynamic Movie Loading -->
+<!-- Modal -->
+<div class="modal" id="movie-modal">
+    <div class="modal-content">
+        <button class="close-modal" onclick="closeModal()">X</button>
+        <h2 id="modal-title">Movie Title</h2>
+        <p id="modal-details">Details about the movie will go here.</p>
+        <p id="modal-size">File Size: 700MB</p>
+        <button id="download-button" onclick="downloadMovie()">Download</button>
+    </div>
+</div>
+
 <script>
-    fetch('movies.json')
-    .then(response => response.json())
-    .then(data => {
-        const movieList = document.getElementById('movie-list');
+    const movies = [
+        { title: "Inception", genre: "action", link: "https://example.com/inception", size: "700MB" },
+        { title: "The Hangover", genre: "comedy", link: "https://example.com/hangover", size: "1.2GB" },
+        { title: "Conjuring", genre: "horror", link: "https://example.com/conjuring", size: "800MB" },
+    ];
 
-        const defaultMovies = data.slice(0, 5);
-        renderMovies(defaultMovies);
-
-        const allMovies = data;
-
-        document.getElementById("search-bar").addEventListener("keyup", () => {
-            const query = document.getElementById("search-bar").value.toLowerCase();
-            const filteredMovies = allMovies.filter(movie => movie.title.toLowerCase().includes(query));
-            renderMovies(filteredMovies);
-        });
-
-        document.getElementById("genre-filter").addEventListener("change", () => {
-            const genre = document.getElementById("genre-filter").value;
-            const filteredMovies = genre === "all" ? allMovies : allMovies.filter(movie => movie.genre === genre);
-            renderMovies(filteredMovies);
-        });
-
-        function renderMovies(movies) {
-            movieList.innerHTML = movies.map(movie => `
-                <li data-genre="${movie.genre}">
-                    <img src="${movie.image || 'https://via.placeholder.com/50x75'}" alt="${movie.title}">
-                    <a onclick="showMovieDetails('${movie.title}', '${movie.genre}', '${movie.size}')">${movie.title}</a>
-                </li>
-            `).join('');
-        }
-    })
-    .catch(err => console.error("Error loading movie data:", err));
-
-    function searchMovies() {
-        const query = document.getElementById("search-bar").value.toLowerCase();
-        const movies = document.querySelectorAll(".movie-list li");
-        movies.forEach(movie => {
-            const movieName = movie.querySelector("a").textContent.toLowerCase();
-            movie.style.display = movieName.includes(query) ? "flex" : "none";
-        });
+    function renderMovies() {
+        const movieList = document.getElementById("movie-list");
+        movieList.innerHTML = movies.map((movie, index) => `
+            <li onclick="showMovieDetails(${index})">
+                <img src="https://via.placeholder.com/50x75" alt="${movie.title}">
+                <a href="javascript:void(0)">${movie.title}</a>
+            </li>
+        `).join('');
     }
 
-    function filterByGenre() {
-        const genre = document.getElementById("genre-filter").value;
-        const movies = document.querySelectorAll(".movie-list li");
-        movies.forEach(movie => {
-            movie.style.display = (genre === "all" || movie.dataset.genre === genre) ? "flex" : "none";
-        });
+    function showMovieDetails(index) {
+        const movie = movies[index];
+        document.getElementById("modal-title").textContent = movie.title;
+        document.getElementById("modal-details").textContent = `Genre: ${movie.genre}`;
+        document.getElementById("modal-size").textContent = `File Size: ${movie.size}`;
+        document.getElementById("download-button").setAttribute("data-link", movie.link);
+        document.getElementById("movie-modal").style.display = "flex";
     }
 
-    function showMovieDetails(title, genre, size) {
-        const details = `
-            <strong>Title:</strong> ${title}<br>
-            <strong>Genre:</strong> ${genre}<br>
-            <strong>Size:</strong> ${size}
-        `;
-
-        const popup = window.open("", "Movie Details", "width=400,height=300");
-        popup.document.write(`<html><body style="font-family: Poppins, Arial; padding: 20px;">${details}</body></html>`);
+    function closeModal() {
+        document.getElementById("movie-modal").style.display = "none";
     }
 
-    function toggleDarkMode() {
-        document.body.classList.toggle("dark-mode");
+    function downloadMovie() {
+        const link = document.getElementById("download-button").getAttribute("data-link");
+        window.open(link, "_blank");
     }
+
+    renderMovies();
 </script>
 
 </body>
