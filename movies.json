@@ -1,20 +1,22 @@
 [
-    {
-        "title": "Inception",
-        "genre": "action",
-        "link": "https://example.com/inception-download",
-        "image": "https://via.placeholder.com/50x75"
-    },
-    {
-        "title": "The Hangover",
-        "genre": "comedy",
-        "link": "https://example.com/the-hangover-download",
-        "image": "https://via.placeholder.com/50x75"
-    },
-    {
-        "title": "rcb",
-        "genre": "horror",
-        "link": "https://www.filmyzilla.com.fj/category/410/hot-indian-web-series/default/1.html",
-        "image": "https://via.placeholder.com/50x75"
-    }
+    { "title": "Inception", "genre": "action", "link": "https://example.com/inception", "image": "https://via.placeholder.com/50x75" },
+    { "title": "The Dark Knight", "genre": "action", "link": "https://example.com/the-dark-knight", "image": "https://via.placeholder.com/50x75" },
+    { "title": "Titanic", "genre": "romance", "link": "https://example.com/titanic", "image": "https://via.placeholder.com/50x75" },
+    { "title": "The Hangover", "genre": "comedy", "link": "https://example.com/the-hangover", "image": "https://via.placeholder.com/50x75" },
+    { "title": "Conjuring", "genre": "horror", "link": "https://example.com/conjuring", "image": "https://via.placeholder.com/50x75" },
+    { "title": "Avengers", "genre": "action", "link": "https://example.com/avengers", "image": "https://via.placeholder.com/50x75" },
+    { "title": "Interstellar", "genre": "sci-fi", "link": "https://example.com/interstellar", "image": "https://via.placeholder.com/50x75" },
+    { "title": "Frozen", "genre": "animation", "link": "https://example.com/frozen", "image": "https://via.placeholder.com/50x75" },
+    { "title": "Joker", "genre": "drama", "link": "https://example.com/joker", "image": "https://via.placeholder.com/50x75" },
+    { "title": "Toy Story", "genre": "animation", "link": "https://example.com/toy-story", "image": "https://via.placeholder.com/50x75" },
+    { "title": "Spider-Man", "genre": "action", "link": "https://example.com/spider-man", "image": "https://via.placeholder.com/50x75" },
+    { "title": "Shrek", "genre": "animation", "link": "https://example.com/shrek", "image": "https://via.placeholder.com/50x75" },
+    { "title": "The Matrix", "genre": "sci-fi", "link": "https://example.com/the-matrix", "image": "https://via.placeholder.com/50x75" },
+    { "title": "The Godfather", "genre": "drama", "link": "https://example.com/the-godfather", "image": "https://via.placeholder.com/50x75" },
+    { "title": "Jurassic Park", "genre": "sci-fi", "link": "https://example.com/jurassic-park", "image": "https://via.placeholder.com/50x75" },
+    { "title": "The Lion King", "genre": "animation", "link": "https://example.com/the-lion-king", "image": "https://via.placeholder.com/50x75" },
+    { "title": "Harry Potter", "genre": "fantasy", "link": "https://example.com/harry-potter", "image": "https://via.placeholder.com/50x75" },
+    { "title": "Finding Nemo", "genre": "animation", "link": "https://example.com/finding-nemo", "image": "https://via.placeholder.com/50x75" },
+    { "title": "Parasite", "genre": "thriller", "link": "https://example.com/parasite", "image": "https://via.placeholder.com/50x75" },
+    { "title": "Deadpool", "genre": "comedy", "link": "https://example.com/deadpool", "image": "https://via.placeholder.com/50x75" }
 ]
