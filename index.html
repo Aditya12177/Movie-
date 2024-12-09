@@ -195,11 +195,13 @@
     const movieData = [
         { title: "Inception", genre: "Action", link: "https://example.com/inception-download", image: "https://via.placeholder.com/50x75", size: "700MB" },
         { title: "The Hangover", genre: "Comedy", link: "https://example.com/hangover-download", image: "https://via.placeholder.com/50x75", size: "1.2GB" }
+        // Add more movies...
     ];
 
     const webSeriesData = [
         { title: "Stranger Things", genre: "Sci-Fi", link: "https://example.com/stranger-things-download", image: "https://via.placeholder.com/50x75", episodes: [{ title: "Episode 1", link: "https://example.com/episode1" }, { title: "Episode 2", link: "https://example.com/episode2" }] },
         { title: "Breaking Bad", genre: "Drama", link: "https://example.com/breaking-bad-download", image: "https://via.placeholder.com/50x75", episodes: [{ title: "Pilot", link: "https://example.com/pilot" }, { title: "Episode 2", link: "https://example.com/episode2" }] }
+        // Add more web series...
     ];
 
     // Initialize the page with movies and web series
@@ -229,7 +231,7 @@
         document.getElementById('modal-details').textContent = `Genre: ${item.genre}`;
         document.getElementById('modal-size').textContent = `File Size: ${item.size || 'Unknown'}`;
 
-        // Clear previous episode list if Web Series
+        // Show episodes list for web series
         const episodeList = document.getElementById('episode-list');
         if (type === 'webseries') {
             episodeList.innerHTML = item.episodes.map(episode => `
@@ -244,7 +246,7 @@
         document.getElementById('download-button').setAttribute('data-link', item.link);
     }
 
-    // Close modal
+    // Function to close modal
     function closeModal() {
         document.getElementById('item-modal').style.display = "none";
     }
