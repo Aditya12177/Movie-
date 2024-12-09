@@ -80,11 +80,11 @@
             margin-right: 15px;
         }
 
-        /* Make movie names bold */
         .movie-list li a {
             font-weight: bold;
             color: #fff; /* White text for movie names */
             text-decoration: none; /* Remove underline */
+            cursor: pointer;
         }
 
         .movie-list li a:hover {
@@ -100,15 +100,6 @@
             border: none;
             padding: 10px;
             border-radius: 5px;
-        }
-
-        /* Additional styles for input focus and button hover */
-        header input[type="text"]:focus {
-            border-color: #FF69B4;
-        }
-
-        header select:focus {
-            background-color: #FFB6C1;
         }
     </style>
 </head>
@@ -137,11 +128,9 @@
     .then(data => {
         const movieList = document.getElementById('movie-list');
 
-        // Default me sirf 5 movies show karo
         const defaultMovies = data.slice(0, 5);
         renderMovies(defaultMovies);
 
-        // Search ya filter karne par saari movies ko consider karo
         const allMovies = data;
 
         document.getElementById("search-bar").addEventListener("keyup", () => {
@@ -160,7 +149,7 @@
             movieList.innerHTML = movies.map(movie => `
                 <li data-genre="${movie.genre}">
                     <img src="${movie.image || 'https://via.placeholder.com/50x75'}" alt="${movie.title}">
-                    <a href="${movie.link}" target="_blank">${movie.title}</a>
+                    <a onclick="showMovieDetails('${movie.title}', '${movie.genre}', '${movie.size}')">${movie.title}</a>
                 </li>
             `).join('');
         }
@@ -182,6 +171,17 @@
         movies.forEach(movie => {
             movie.style.display = (genre === "all" || movie.dataset.genre === genre) ? "flex" : "none";
         });
+    }
+
+    function showMovieDetails(title, genre, size) {
+        const details = `
+            <strong>Title:</strong> ${title}<br>
+            <strong>Genre:</strong> ${genre}<br>
+            <strong>Size:</strong> ${size}
+        `;
+
+        const popup = window.open("", "Movie Details", "width=400,height=300");
+        popup.document.write(`<html><body style="font-family: Poppins, Arial; padding: 20px;">${details}</body></html>`);
     }
 
     function toggleDarkMode() {
