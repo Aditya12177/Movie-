@@ -162,6 +162,7 @@
         <h2 id="modal-title">Movie Title</h2>
         <p id="modal-details">Genre: Action</p>
         <p id="modal-size">File Size: 700MB</p>
+        <p id="modal-quality">Quality: Full HD</p> <!-- Added quality field -->
         <button id="download-button" onclick="downloadMovie()">Download</button>
     </div>
 </div>
@@ -206,7 +207,8 @@
         const movie = allMovies[index];
         document.getElementById('modal-title').textContent = movie.title;
         document.getElementById('modal-details').textContent = `Genre: ${movie.genre}`;
-        document.getElementById('modal-size').textContent = `File Size: Unknown`; // Replace with actual size if available
+        document.getElementById('modal-size').textContent = `File Size: ${movie.size || 'Unknown'}`;
+        document.getElementById('modal-quality').textContent = `Quality: ${movie.quality || 'Not Available'}`; // Display quality
         document.getElementById('download-button').setAttribute('data-link', movie.link);
         document.getElementById('movie-modal').style.display = "flex";
     }
