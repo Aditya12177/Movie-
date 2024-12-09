@@ -10,15 +10,15 @@
             font-family: 'Poppins', Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #2c3e50, #34495e);
-            color: #ecf0f1;
+            background: linear-gradient(135deg, #FFB6C1, #FF69B4); /* Soft pink gradient */
+            color: #fff; /* White text for readability */
             transition: background-color 0.5s, color 0.5s;
         }
 
         header {
             padding: 20px;
             text-align: center;
-            background-color: rgba(52, 73, 94, 0.9);
+            background-color: #2C3E50; /* Dark blue-grey for header */
             position: sticky;
             top: 0;
             z-index: 1000;
@@ -33,6 +33,8 @@
             font-size: 16px;
             outline: none;
             transition: all 0.3s ease-in-out;
+            background-color: #fff; /* White background for input */
+            color: #333; /* Dark text for input */
         }
 
         header select {
@@ -42,8 +44,8 @@
             border-radius: 25px;
             font-size: 16px;
             outline: none;
-            background-color: #1abc9c;
-            color: #fff;
+            background-color: #FF69B4; /* Vibrant pink for select dropdown */
+            color: #fff; /* White text */
         }
 
         .container {
@@ -61,13 +63,13 @@
             align-items: center;
             padding: 10px 20px;
             margin: 10px 0;
-            background-color: #3b5998;
+            background-color: #2980B9; /* Bright blue for movie items */
             border-radius: 10px;
             transition: transform 0.3s ease, background-color 0.3s ease;
         }
 
         .movie-list li:hover {
-            background-color: #1abc9c;
+            background-color: #FF69B4; /* Hover effect with pink */
             transform: scale(1.05);
         }
 
@@ -78,20 +80,35 @@
             margin-right: 15px;
         }
 
-        /* Add this part to make movie names bold */
+        /* Make movie names bold */
         .movie-list li a {
-            font-weight: bold; /* This will make the movie name bold */
+            font-weight: bold;
+            color: #fff; /* White text for movie names */
+            text-decoration: none; /* Remove underline */
+        }
+
+        .movie-list li a:hover {
+            text-decoration: underline; /* Underline effect on hover */
         }
 
         .toggle-dark-mode {
             margin-top: 10px;
             cursor: pointer;
             font-size: 14px;
-            background: #ecf0f1;
-            color: #34495e;
+            background: #FF69B4; /* Bright pink button */
+            color: #fff;
             border: none;
             padding: 10px;
             border-radius: 5px;
+        }
+
+        /* Additional styles for input focus and button hover */
+        header input[type="text"]:focus {
+            border-color: #FF69B4;
+        }
+
+        header select:focus {
+            background-color: #FFB6C1;
         }
     </style>
 </head>
@@ -149,7 +166,6 @@
         }
     })
     .catch(err => console.error("Error loading movie data:", err));
-    
 
     function searchMovies() {
         const query = document.getElementById("search-bar").value.toLowerCase();
