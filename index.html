@@ -189,6 +189,7 @@
 <script>
     let allMovies = [];
     let allWebSeries = [];
+    let searchType = ''; // 'movies' or 'webseries'
     const defaultItemCount = 5;
 
     // Sample data (Replace with your actual data)
@@ -210,8 +211,9 @@
     renderItems('movies');
     renderItems('webseries');
 
-    // Function to render movies and web series
+    // Render movies and web series based on the selected type
     function renderItems(type) {
+        searchType = type;
         const itemList = type === 'movies' ? document.getElementById('movie-list') : document.getElementById('webseries-list');
         const items = type === 'movies' ? allMovies : allWebSeries;
         const itemCount = type === 'movies' ? defaultItemCount : items.length;
@@ -224,14 +226,14 @@
         `).join('');
     }
 
-    // Function to display item details
+    // Display item details
     function showItemDetails(index, type) {
         const item = type === 'movies' ? allMovies[index] : allWebSeries[index];
         document.getElementById('modal-title').textContent = item.title;
         document.getElementById('modal-details').textContent = `Genre: ${item.genre}`;
         document.getElementById('modal-size').textContent = `File Size: ${item.size || 'Unknown'}`;
 
-        // Show episodes list for web series
+        // Show episodes for web series
         const episodeList = document.getElementById('episode-list');
         if (type === 'webseries') {
             episodeList.innerHTML = item.episodes.map(episode => `
@@ -246,7 +248,7 @@
         document.getElementById('download-button').setAttribute('data-link', item.link);
     }
 
-    // Function to close modal
+    // Close modal
     function closeModal() {
         document.getElementById('item-modal').style.display = "none";
     }
@@ -266,8 +268,7 @@
     function searchItems() {
         const query = document.getElementById('search-bar').value.toLowerCase();
         if (query === "") {
-            renderItems('movies');
-            renderItems('webseries');
+            renderItems(searchType); // Render selected type (Movies or Web Series)
         } else {
             const filteredMovies = allMovies.filter(movie => movie.title.toLowerCase().includes(query));
             const filteredWebSeries = allWebSeries.filter(series => series.title.toLowerCase().includes(query));
@@ -275,24 +276,28 @@
         }
     }
 
-    // Function to render filtered search results
+    // Render filtered search results
     function renderFilteredItems(filteredMovies, filteredWebSeries) {
         const movieList = document.getElementById('movie-list');
         const webSeriesList = document.getElementById('webseries-list');
 
-        movieList.innerHTML = filteredMovies.map(item => `
-            <li onclick="showItemDetails(${allMovies.indexOf(item)}, 'movies')">
-                <img src="${item.image || 'https://via.placeholder.com/50x75'}" alt="${item.title}">
-                <a href="javascript:void(0)">${item.title}</a>
-            </li>
-        `).join('');
-
-        webSeriesList.innerHTML = filteredWebSeries.map(item => `
-            <li onclick="showItemDetails(${allWebSeries.indexOf(item)}, 'webseries')">
-                <img src="${item.image || 'https://via.placeholder.com/50x75'}" alt="${item.title}">
-                <a href="javascript:void(0)">${item.title}</a>
-            </li>
-        `).join('');
+        if (searchType === 'movies') {
+            movieList.innerHTML = filteredMovies.map(item => `
+                <li onclick="showItemDetails(${allMovies.indexOf(item)}, 'movies')">
+                    <img src="${item.image || 'https://via.placeholder.com/50x75'}" alt="${item.title}">
+                    <a href="javascript:void(0)">${item.title}</a>
+                </li>
+            `).join('');
+            webSeriesList.innerHTML = ''; // Clear Web Series results
+        } else if (searchType === 'webseries') {
+            webSeriesList.innerHTML = filteredWebSeries.map(item => `
+                <li onclick="showItemDetails(${allWebSeries.indexOf(item)}, 'webseries')">
+                    <img src="${item.image || 'https://via.placeholder.com/50x75'}" alt="${item.title}">
+                    <a href="javascript:void(0)">${item.title}</a>
+                </li>
+            `).join('');
+            movieList.innerHTML = ''; // Clear Movie results
+        }
     }
 </script>
 
