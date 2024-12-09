@@ -153,27 +153,6 @@
             "link": "https://example.com/revenant-download",
             "image": "https://raw.githubusercontent.com/Aditya12177/Image/main/revenant.jpg",
             "size": "1.9GB"
-        },
-        {
-            "title": "The Wolf of Wall Street",
-            "genre": "Comedy",
-            "link": "https://example.com/wolf-wall-street-download",
-            "image": "https://raw.githubusercontent.com/Aditya12177/Image/main/wolfwallstreet.jpg",
-            "size": "2.0GB"
-        },
-        {
-            "title": "La La Land",
-            "genre": "Romance",
-            "link": "https://example.com/lala-land-download",
-            "image": "https://raw.githubusercontent.com/Aditya12177/Image/main/lalaland.jpg",
-            "size": "1.5GB"
-        },
-        {
-            "title": "The Social Network",
-            "genre": "Drama",
-            "link": "https://example.com/social-network-download",
-            "image": "https://raw.githubusercontent.com/Aditya12177/Image/main/socialnetwork.jpg",
-            "size": "1.2GB"
         }
     ],
     "webseries": [
@@ -209,4 +188,4 @@
         }
     ]
         }
-            
+    
