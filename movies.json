@@ -1,4 +1,13 @@
 [
+   
+    {
+        "title": "Rcb",
+        "genre": "Action",
+        "link": "https://example.com/inception-download",
+        "image": "https://raw.githubusercontent.com/Aditya12177/Image/main/inception.jpg",
+        "size": "700MB",
+        "quality": "hd"
+    },
     {
         "title": "Inception",
         "genre": "Action",
