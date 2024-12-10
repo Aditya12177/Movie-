@@ -1,197 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta name="monetag" content="2c1db6513a212024955d58fa2379d171">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movie List and Quiz</title>
+    <title>Movie List</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        /* General Styles */
         body {
             font-family: 'Poppins', Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background: var(--background-color, linear-gradient(135deg, #FFB6C1, #FF69B4));
-            color: var(--text-color, #fff);
+            background: linear-gradient(135deg, #FFB6C1, #FF69B4);
+            color: #fff;
             transition: background-color 0.5s, color 0.5s;
         }
-
-        header {
-            padding: 20px;
-            text-align: center;
-            background-color: #2C3E50;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
-        }
-
-        header input[type="text"],
-        header select {
-            width: 40%;
-            padding: 10px;
-            margin: 5px;
-            border: none;
-            border-radius: 25px;
-            font-size: 16px;
-            outline: none;
-        }
-
-        .theme-toggle {
-            margin-left: 10px;
-            padding: 5px 10px;
-            border: none;
-            border-radius: 25px;
-            background: #FF69B4;
-            color: #fff;
-            cursor: pointer;
-        }
-
-        .container {
-            padding: 20px;
-        }
-
-        .movie-list {
-            list-style: none;
-            padding: 0;
-        }
-
-        .movie-list li {
-            display: flex;
-            align-items: center;
-            padding: 10px 20px;
-            margin: 10px 0;
-            background-color: #2980B9;
-            border-radius: 10px;
-            transition: transform 0.3s, background-color 0.3s;
-            cursor: pointer;
-        }
-
-        .movie-list li:hover {
-            background-color: #FF69B4;
-            transform: scale(1.05);
-        }
-
-        .pagination {
-            display: flex;
-            justify-content: center;
-            margin: 20px 0;
-        }
-
-        .pagination button {
-            margin: 0 5px;
-            padding: 10px 15px;
-            border: none;
-            background-color: #FF69B4;
-            color: #fff;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .pagination button:hover {
-            background-color: #FF1493;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            justify-content: center;
-            align-items: center;
-            z-index: 1001;
-        }
-
-        .modal-content {
-            background-color: #fff;
-            color: #333;
-            padding: 20px;
-            border-radius: 10px;
-            width: 400px;
-            max-width: 90%;
-            text-align: center;
-            position: relative;
-        }
-
-        .modal-content button {
-            background-color: #FF69B4;
-            color: #fff;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .quiz-container {
-            background-color: #2C3E50;
-            padding: 20px;
-            border-radius: 10px;
-            color: #fff;
-            max-width: 600px;
-            margin: 40px auto;
-        }
-
-        .quiz-container h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .timer {
-            text-align: center;
-            font-size: 18px;
-            margin-bottom: 15px;
-        }
+        /* Additional styles omitted for brevity */
     </style>
 </head>
 <body>
 <header>
     <h1>Movie Search</h1>
-    <input type="text" id="search-bar" placeholder="Search movies..." onkeyup="searchMovies()">
-    <select id="genre-filter" onchange="filterByGenre()">
-        <option value="">All Genres</option>
-        <option value="Action">Action</option>
-        <option value="Comedy">Comedy</option>
-        <option value="Drama">Drama</option>
-    </select>
-    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+    <input type="text" id="search-bar" placeholder="Search for a movie..." onkeyup="searchMovies()">
 </header>
 
 <div class="container">
     <ul class="movie-list" id="movie-list"></ul>
-    <div class="pagination" id="pagination"></div>
 </div>
 
 <!-- Modal -->
 <div class="modal" id="movie-modal">
     <div class="modal-content">
+        <button class="close-modal" onclick="closeModal()">X</button>
         <h2 id="modal-title">Movie Title</h2>
-        <p id="modal-genre">Genre: Action</p>
-        <p id="modal-details">File Size: 700MB | Quality: Full HD</p>
-        <h3>Similar Movies:</h3>
-        <ul id="similar-movies"></ul>
-        <button onclick="closeModal()">Close</button>
+        <p id="modal-details">Genre: Action</p>
+        <p id="modal-size">File Size: 700MB</p>
+        <p id="modal-quality">Quality: Full HD</p>
+        <button id="download-button" onclick="downloadMovie()">Download</button>
     </div>
 </div>
 
 <!-- Quiz Section -->
 <div class="quiz-container">
-    <h2>Movie Quiz</h2>
-    <div class="timer" id="timer">Time Left: 15s</div>
-    <p id="question">Loading...</p>
-    <div>
-        <button onclick="checkAnswer('A')">Option A</button>
-        <button onclick="checkAnswer('B')">Option B</button>
-        <button onclick="checkAnswer('C')">Option C</button>
-        <button onclick="checkAnswer('D')">Option D</button>
+    <h2>Movie Quiz: Test Your Knowledge!</h2>
+    <div id="quiz">
+        <div id="question-box">
+            <p id="question">Loading question...</p>
+            <div class="quiz-options">
+                <button onclick="checkAnswer('A')" id="optionA">Option A</button>
+                <button onclick="checkAnswer('B')" id="optionB">Option B</button>
+                <button onclick="checkAnswer('C')" id="optionC">Option C</button>
+                <button onclick="checkAnswer('D')" id="optionD">Option D</button>
+            </div>
+        </div>
+        <div class="quiz-feedback" id="quiz-feedback"></div>
+        <div class="quiz-score" id="quiz-score">Your Score: 0</div>
     </div>
-    <p id="feedback"></p>
 </div>
 
 <script>
-    // Add your JavaScript functions here: pagination, quiz timer, theme toggle, etc.
+    // JavaScript code for movies and quiz
+    fetch('movies.json')
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(err => console.error(err));
+    /* Additional JavaScript omitted for brevity */
 </script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6540072198059130"
+ crossorigin="anonymous"></script>
 </body>
 </html>
