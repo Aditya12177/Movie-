@@ -1,6 +1,49 @@
 [
    
-    {
+  {
+    "movie_name": "Singham Again",
+    "release_date": "2024-12-27",
+    "genre": "Action, Drama",
+    "streaming_link": "https://www.amazon.com/Prime-Video",
+    "rating": 7.5
+  },
+  {
+    "movie_name": "RRR",
+    "release_date": "2022-03-25",
+    "genre": "Action, Drama, History",
+    "streaming_link": "https://www.netflix.com/title/81077865",
+    "rating": 8.0
+  },
+  {
+    "movie_name": "Pushpa 2: The Rule",
+    "release_date": "2024-12-05",
+    "genre": "Action, Drama",
+    "streaming_link": "https://www.hotstar.com/in",
+    "rating": 7.8
+  },
+  {
+    "movie_name": "Brahmastra",
+    "release_date": "2022-09-09",
+    "genre": "Fantasy, Action",
+    "streaming_link": "https://www.disneyplus.com/in",
+    "rating": 6.8
+  },
+  {
+    "movie_name": "KGF Chapter 2",
+    "release_date": "2022-04-14",
+    "genre": "Action, Drama",
+    "streaming_link": "https://www.amazon.com/Prime-Video",
+    "rating": 8.4
+  },
+  {
+    "movie_name": "The Kashmir Files",
+    "release_date": "2022-03-11",
+    "genre": "Drama, History",
+    "streaming_link": "https://www.zee5.com",
+    "rating": 8.2
+  },
+   
+   {
         "title": "Rcb",
         "genre": "Action",
         "link": "https://example.com/inception-download",
