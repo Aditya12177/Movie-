@@ -34,6 +34,11 @@
             outline: none;
             background-color: #fff;
             color: #333;
+            transition: box-shadow 0.3s;
+        }
+
+        header input[type="text"]:focus {
+            box-shadow: 0 0 10px rgba(255, 105, 180, 0.8);
         }
 
         .container {
@@ -48,17 +53,19 @@
         .movie-list li {
             display: flex;
             align-items: center;
-            padding: 10px 20px;
+            padding: 15px 20px;
             margin: 10px 0;
             background-color: #2980B9;
             border-radius: 10px;
-            transition: transform 0.3s, background-color 0.3s;
+            transition: transform 0.3s, background-color 0.3s, box-shadow 0.3s;
             cursor: pointer;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
         }
 
         .movie-list li:hover {
             background-color: #FF69B4;
             transform: scale(1.05);
+            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.5);
         }
 
         .movie-list li img {
@@ -86,7 +93,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgba(0, 0, 0, 0.8);
             justify-content: center;
             align-items: center;
             z-index: 1001;
@@ -101,6 +108,18 @@
             max-width: 90%;
             text-align: center;
             position: relative;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
 
         .modal-content h2 {
@@ -118,10 +137,12 @@
         .modal-content button {
             background-color: #FF69B4;
             color: #fff;
-            padding: 10px;
+            padding: 10px 20px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
         }
 
         .modal-content button:hover {
@@ -141,6 +162,31 @@
 
         .close-modal:hover {
             color: #FF69B4;
+        }
+
+        /* Dark Mode Toggle */
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #2C3E50;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .dark-mode-toggle:hover {
+            background-color: #FF69B4;
+            transform: rotate(45deg);
         }
     </style>
 </head>
@@ -162,20 +208,22 @@
         <h2 id="modal-title">Movie Title</h2>
         <p id="modal-details">Genre: Action</p>
         <p id="modal-size">File Size: 700MB</p>
-        <p id="modal-quality">Quality: Full HD</p> <!-- Added quality field -->
+        <p id="modal-quality">Quality: Full HD</p>
         <button id="download-button" onclick="downloadMovie()">Download</button>
     </div>
 </div>
 
+<button class="dark-mode-toggle" onclick="toggleDarkMode()">☾</button>
+
 <script>
-    let allMovies = []; // To hold all movies from the JSON
-    const defaultMovieCount = 5; // Number of movies to display by default
+    let allMovies = [];
+    const defaultMovieCount = 5;
 
     fetch('movies.json')
         .then(response => response.json())
         .then(data => {
-            allMovies = data; // Save all movies for later use
-            renderMovies(allMovies.slice(0, defaultMovieCount)); // Show only the first 5 movies
+            allMovies = data;
+            renderMovies(allMovies.slice(0, defaultMovieCount));
         })
         .catch(err => console.error("Error loading movie data:", err));
 
@@ -196,10 +244,10 @@
     function searchMovies() {
         const query = document.getElementById('search-bar').value.toLowerCase();
         if (query === "") {
-            renderMovies(allMovies.slice(0, defaultMovieCount)); // Show default 5 movies if search is empty
+            renderMovies(allMovies.slice(0, defaultMovieCount));
         } else {
             const filteredMovies = allMovies.filter(movie => movie.title.toLowerCase().includes(query));
-            renderMovies(filteredMovies); // Show matching movies only
+            renderMovies(filteredMovies);
         }
     }
 
@@ -208,7 +256,7 @@
         document.getElementById('modal-title').textContent = movie.title;
         document.getElementById('modal-details').textContent = `Genre: ${movie.genre}`;
         document.getElementById('modal-size').textContent = `File Size: ${movie.size || 'Unknown'}`;
-        document.getElementById('modal-quality').textContent = `Quality: ${movie.quality || 'Not Available'}`; // Display quality
+        document.getElementById('modal-quality').textContent = `Quality: ${movie.quality || 'Not Available'}`;
         document.getElementById('download-button').setAttribute('data-link', movie.link);
         document.getElementById('movie-modal').style.display = "flex";
     }
@@ -220,6 +268,10 @@
     function downloadMovie() {
         const link = document.getElementById('download-button').getAttribute('data-link');
         window.open(link, "_blank");
+    }
+
+    function toggleDarkMode() {
+        document.body.classList.toggle('dark-mode');
     }
 </script>
 
