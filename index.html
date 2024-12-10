@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="monetag" content="2c1db6513a212024955d58fa2379d171">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Movie List</title>
@@ -15,10 +14,138 @@
             color: #fff;
             transition: background-color 0.5s, color 0.5s;
         }
-        /* Additional styles omitted for brevity */
+
+        header {
+            padding: 20px;
+            text-align: center;
+            background-color: #2C3E50;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        header input[type="text"] {
+            width: 50%;
+            padding: 10px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+            background-color: #fff;
+            color: #333;
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        .movie-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .movie-list li {
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            margin: 10px 0;
+            background-color: #2980B9;
+            border-radius: 10px;
+            transition: transform 0.3s, background-color 0.3s;
+            cursor: pointer;
+        }
+
+        .movie-list li:hover {
+            background-color: #FF69B4;
+            transform: scale(1.05);
+        }
+
+        .movie-list li img {
+            width: 50px;
+            height: 75px;
+            border-radius: 5px;
+            margin-right: 15px;
+        }
+
+        .movie-list li a {
+            font-weight: bold;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .movie-list li a:hover {
+            text-decoration: underline;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            width: 400px;
+            max-width: 90%;
+            text-align: center;
+            position: relative;
+        }
+
+        .modal-content h2 {
+            margin-top: 0;
+            font-size: 24px;
+            font-weight: bold;
+            color: #2C3E50;
+        }
+
+        .modal-content p {
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+        .modal-content button {
+            background-color: #FF69B4;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .modal-content button:hover {
+            background-color: #FF1493;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .close-modal:hover {
+            color: #FF69B4;
+        }
     </style>
 </head>
 <body>
+
 <header>
     <h1>Movie Search</h1>
     <input type="text" id="search-bar" placeholder="Search for a movie..." onkeyup="searchMovies()">
@@ -35,39 +162,66 @@
         <h2 id="modal-title">Movie Title</h2>
         <p id="modal-details">Genre: Action</p>
         <p id="modal-size">File Size: 700MB</p>
-        <p id="modal-quality">Quality: Full HD</p>
+        <p id="modal-quality">Quality: Full HD</p> <!-- Added quality field -->
         <button id="download-button" onclick="downloadMovie()">Download</button>
     </div>
 </div>
 
-<!-- Quiz Section -->
-<div class="quiz-container">
-    <h2>Movie Quiz: Test Your Knowledge!</h2>
-    <div id="quiz">
-        <div id="question-box">
-            <p id="question">Loading question...</p>
-            <div class="quiz-options">
-                <button onclick="checkAnswer('A')" id="optionA">Option A</button>
-                <button onclick="checkAnswer('B')" id="optionB">Option B</button>
-                <button onclick="checkAnswer('C')" id="optionC">Option C</button>
-                <button onclick="checkAnswer('D')" id="optionD">Option D</button>
-            </div>
-        </div>
-        <div class="quiz-feedback" id="quiz-feedback"></div>
-        <div class="quiz-score" id="quiz-score">Your Score: 0</div>
-    </div>
-</div>
-
 <script>
-    // JavaScript code for movies and quiz
+    let allMovies = []; // To hold all movies from the JSON
+    const defaultMovieCount = 5; // Number of movies to display by default
+
     fetch('movies.json')
         .then(response => response.json())
-        .then(data => console.log(data))
-        .catch(err => console.error(err));
-    /* Additional JavaScript omitted for brevity */
+        .then(data => {
+            allMovies = data; // Save all movies for later use
+            renderMovies(allMovies.slice(0, defaultMovieCount)); // Show only the first 5 movies
+        })
+        .catch(err => console.error("Error loading movie data:", err));
+
+    function renderMovies(movies) {
+        const movieList = document.getElementById('movie-list');
+        if (movies.length === 0) {
+            movieList.innerHTML = "<p>No movies found.</p>";
+        } else {
+            movieList.innerHTML = movies.map((movie, index) => `
+                <li onclick="showMovieDetails(${index})">
+                    <img src="${movie.image || 'https://via.placeholder.com/50x75'}" alt="${movie.title}">
+                    <a href="javascript:void(0)">${movie.title}</a>
+                </li>
+            `).join('');
+        }
+    }
+
+    function searchMovies() {
+        const query = document.getElementById('search-bar').value.toLowerCase();
+        if (query === "") {
+            renderMovies(allMovies.slice(0, defaultMovieCount)); // Show default 5 movies if search is empty
+        } else {
+            const filteredMovies = allMovies.filter(movie => movie.title.toLowerCase().includes(query));
+            renderMovies(filteredMovies); // Show matching movies only
+        }
+    }
+
+    function showMovieDetails(index) {
+        const movie = allMovies[index];
+        document.getElementById('modal-title').textContent = movie.title;
+        document.getElementById('modal-details').textContent = `Genre: ${movie.genre}`;
+        document.getElementById('modal-size').textContent = `File Size: ${movie.size || 'Unknown'}`;
+        document.getElementById('modal-quality').textContent = `Quality: ${movie.quality || 'Not Available'}`; // Display quality
+        document.getElementById('download-button').setAttribute('data-link', movie.link);
+        document.getElementById('movie-modal').style.display = "flex";
+    }
+
+    function closeModal() {
+        document.getElementById('movie-modal').style.display = "none";
+    }
+
+    function downloadMovie() {
+        const link = document.getElementById('download-button').getAttribute('data-link');
+        window.open(link, "_blank");
+    }
 </script>
 
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6540072198059130"
- crossorigin="anonymous"></script>
 </body>
 </html>
