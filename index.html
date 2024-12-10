@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movie List and Quiz</title>
+    <title>Movie List</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
         body {
@@ -78,152 +78,149 @@
             text-decoration: underline;
         }
 
-        /* Quiz Section Styling */
-        .quiz {
-            background-color: #2C3E50;
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            color: #333;
             padding: 20px;
             border-radius: 10px;
-            color: white;
+            width: 400px;
+            max-width: 90%;
             text-align: center;
-            margin: 20px auto;
-            width: 80%;
-            max-width: 500px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            position: relative;
         }
 
-        .quiz h2 {
+        .modal-content h2 {
+            margin-top: 0;
             font-size: 24px;
-            margin-bottom: 20px;
+            font-weight: bold;
+            color: #2C3E50;
         }
 
-        .quiz p {
-            font-size: 18px;
-        }
-
-        .quiz button {
-            margin: 10px 5px;
-            padding: 10px 20px;
+        .modal-content p {
+            margin: 10px 0;
             font-size: 16px;
+        }
+
+        .modal-content button {
             background-color: #FF69B4;
-            color: white;
+            color: #fff;
+            padding: 10px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
         }
 
-        .quiz button:hover {
+        .modal-content button:hover {
             background-color: #FF1493;
         }
 
-        #score-box {
-            margin-top: 20px;
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
             font-size: 18px;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .close-modal:hover {
+            color: #FF69B4;
         }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>Movie List and Quiz</h1>
+    <h1>Movie Search</h1>
     <input type="text" id="search-bar" placeholder="Search for a movie..." onkeyup="searchMovies()">
 </header>
 
 <div class="container">
-    <h2>Movies</h2>
-    <ul class="movie-list" id="movie-list">
-        <!-- Dynamic Movie List -->
-    </ul>
+    <ul class="movie-list" id="movie-list"></ul>
 </div>
 
-<!-- Quiz Section -->
-<div id="quiz-container" class="quiz">
-    <h2>Movie Quiz: Test Your Knowledge!</h2>
-    <div id="question-box">
-        <p id="question">Loading question...</p>
-        <button onclick="checkAnswer('A')" id="optionA">Option A</button>
-        <button onclick="checkAnswer('B')" id="optionB">Option B</button>
-        <button onclick="checkAnswer('C')" id="optionC">Option C</button>
-        <button onclick="checkAnswer('D')" id="optionD">Option D</button>
-    </div>
-    <div id="score-box">
-        <p>Your Score: <span id="score">0</span></p>
+<!-- Modal -->
+<div class="modal" id="movie-modal">
+    <div class="modal-content">
+        <button class="close-modal" onclick="closeModal()">X</button>
+        <h2 id="modal-title">Movie Title</h2>
+        <p id="modal-details">Genre: Action</p>
+        <p id="modal-size">File Size: 700MB</p>
+        <p id="modal-quality">Quality: Full HD</p> <!-- Added quality field -->
+        <button id="download-button" onclick="downloadMovie()">Download</button>
     </div>
 </div>
 
 <script>
-    const quizQuestions = [
-        {
-            question: "Which movie won Best Picture in 2020?",
-            options: {
-                A: "Parasite",
-                B: "Joker",
-                C: "1917",
-                D: "Once Upon a Time in Hollywood"
-            },
-            correct: "A"
-        },
-        {
-            question: "Which actor played Iron Man in the Marvel series?",
-            options: {
-                A: "Chris Hemsworth",
-                B: "Robert Downey Jr.",
-                C: "Chris Evans",
-                D: "Mark Ruffalo"
-            },
-            correct: "B"
-        },
-        {
-            question: "What is the highest-grossing movie of all time?",
-            options: {
-                A: "Avatar",
-                B: "Titanic",
-                C: "Avengers: Endgame",
-                D: "Star Wars: The Force Awakens"
-            },
-            correct: "A"
-        }
-    ];
+    let allMovies = []; // To hold all movies from the JSON
+    const defaultMovieCount = 5; // Number of movies to display by default
 
-    let currentQuestionIndex = 0;
-    let score = 0;
+    fetch('movies.json')
+        .then(response => response.json())
+        .then(data => {
+            allMovies = data; // Save all movies for later use
+            renderMovies(allMovies.slice(0, defaultMovieCount)); // Show only the first 5 movies
+        })
+        .catch(err => console.error("Error loading movie data:", err));
 
-    // Function to load a question
-    function loadQuestion() {
-        const question = quizQuestions[currentQuestionIndex];
-        document.getElementById("question").textContent = question.question;
-        document.getElementById("optionA").textContent = question.options.A;
-        document.getElementById("optionB").textContent = question.options.B;
-        document.getElementById("optionC").textContent = question.options.C;
-        document.getElementById("optionD").textContent = question.options.D;
-    }
-
-    // Function to check the answer
-    function checkAnswer(selectedOption) {
-        const question = quizQuestions[currentQuestionIndex];
-        if (selectedOption === question.correct) {
-            score += 10; // Add points for correct answer
-            alert("Correct Answer!");
+    function renderMovies(movies) {
+        const movieList = document.getElementById('movie-list');
+        if (movies.length === 0) {
+            movieList.innerHTML = "<p>No movies found.</p>";
         } else {
-            alert("Wrong Answer. The correct answer was " + question.options[question.correct]);
-        }
-
-        // Update the score display
-        document.getElementById("score").textContent = score;
-
-        // Load the next question or end the quiz
-        currentQuestionIndex++;
-        if (currentQuestionIndex < quizQuestions.length) {
-            loadQuestion();
-        } else {
-            alert("Quiz Finished! Your final score is " + score);
-            currentQuestionIndex = 0; // Reset quiz
-            score = 0;
-            loadQuestion(); // Reload the first question
+            movieList.innerHTML = movies.map((movie, index) => `
+                <li onclick="showMovieDetails(${index})">
+                    <img src="${movie.image || 'https://via.placeholder.com/50x75'}" alt="${movie.title}">
+                    <a href="javascript:void(0)">${movie.title}</a>
+                </li>
+            `).join('');
         }
     }
 
-    // Load the first question when the page loads
-    loadQuestion();
+    function searchMovies() {
+        const query = document.getElementById('search-bar').value.toLowerCase();
+        if (query === "") {
+            renderMovies(allMovies.slice(0, defaultMovieCount)); // Show default 5 movies if search is empty
+        } else {
+            const filteredMovies = allMovies.filter(movie => movie.title.toLowerCase().includes(query));
+            renderMovies(filteredMovies); // Show matching movies only
+        }
+    }
+
+    function showMovieDetails(index) {
+        const movie = allMovies[index];
+        document.getElementById('modal-title').textContent = movie.title;
+        document.getElementById('modal-details').textContent = `Genre: ${movie.genre}`;
+        document.getElementById('modal-size').textContent = `File Size: ${movie.size || 'Unknown'}`;
+        document.getElementById('modal-quality').textContent = `Quality: ${movie.quality || 'Not Available'}`; // Display quality
+        document.getElementById('download-button').setAttribute('data-link', movie.link);
+        document.getElementById('movie-modal').style.display = "flex";
+    }
+
+    function closeModal() {
+        document.getElementById('movie-modal').style.display = "none";
+    }
+
+    function downloadMovie() {
+        const link = document.getElementById('download-button').getAttribute('data-link');
+        window.open(link, "_blank");
+    }
 </script>
 
 </body>
