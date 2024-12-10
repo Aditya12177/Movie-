@@ -1,6 +1,55 @@
 [
  
-   {
+  
+  {
+    "title": "Singham Again",
+    "genre": "Action",
+    "link": "https://www.amazon.com/Prime-Video",
+    "image": "https://example.com/singham-again.jpg",
+    "size": "Not Applicable",
+    "quality": "HD"
+  },
+  {
+    "title": "RRR",
+    "genre": "Action, Drama",
+    "link": "https://www.netflix.com/title/81077865",
+    "image": "https://example.com/rrr.jpg",
+    "size": "Not Applicable",
+    "quality": "4K"
+  },
+  {
+    "title": "Pushpa 2: The Rule",
+    "genre": "Action, Drama",
+    "link": "https://www.hotstar.com/in",
+    "image": "https://example.com/pushpa-2.jpg",
+    "size": "Not Applicable",
+    "quality": "HD"
+  },
+  {
+    "title": "Brahmastra",
+    "genre": "Fantasy, Action",
+    "link": "https://www.disneyplus.com/in",
+    "image": "https://example.com/brahmastra.jpg",
+    "size": "Not Applicable",
+    "quality": "HD"
+  },
+  {
+    "title": "KGF Chapter 2",
+    "genre": "Action, Drama",
+    "link": "https://www.amazon.com/Prime-Video",
+    "image": "https://example.com/kgf2.jpg",
+    "size": "Not Applicable",
+    "quality": "4K"
+  },
+  {
+    "title": "The Kashmir Files",
+    "genre": "Drama, History",
+    "link": "https://www.zee5.com",
+    "image": "https://example.com/kashmir-files.jpg",
+    "size": "Not Applicable",
+    "quality": "HD"
+  },
+  {
         "title": "Rcb",
         "genre": "Action",
         "link": "https://example.com/inception-download",
