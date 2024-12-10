@@ -1,20 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    
-    <meta name="monetag" content="2c1db6513a212024955d58fa2379d171">
-    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movie List</title>
+    <title>Movie List and Quiz</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
+        /* General Styles */
         body {
             font-family: 'Poppins', Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #FFB6C1, #FF69B4);
-            color: #fff;
+            background: var(--background-color, linear-gradient(135deg, #FFB6C1, #FF69B4));
+            color: var(--text-color, #fff);
             transition: background-color 0.5s, color 0.5s;
         }
 
@@ -28,15 +26,25 @@
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
         }
 
-        header input[type="text"] {
-            width: 50%;
+        header input[type="text"],
+        header select {
+            width: 40%;
             padding: 10px;
+            margin: 5px;
             border: none;
             border-radius: 25px;
             font-size: 16px;
             outline: none;
-            background-color: #fff;
-            color: #333;
+        }
+
+        .theme-toggle {
+            margin-left: 10px;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 25px;
+            background: #FF69B4;
+            color: #fff;
+            cursor: pointer;
         }
 
         .container {
@@ -64,24 +72,26 @@
             transform: scale(1.05);
         }
 
-        .movie-list li img {
-            width: 50px;
-            height: 75px;
-            border-radius: 5px;
-            margin-right: 15px;
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
         }
 
-        .movie-list li a {
-            font-weight: bold;
+        .pagination button {
+            margin: 0 5px;
+            padding: 10px 15px;
+            border: none;
+            background-color: #FF69B4;
             color: #fff;
-            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
 
-        .movie-list li a:hover {
-            text-decoration: underline;
+        .pagination button:hover {
+            background-color: #FF1493;
         }
 
-        /* Modal Styles */
         .modal {
             display: none;
             position: fixed;
@@ -106,18 +116,6 @@
             position: relative;
         }
 
-        .modal-content h2 {
-            margin-top: 0;
-            font-size: 24px;
-            font-weight: bold;
-            color: #2C3E50;
-        }
-
-        .modal-content p {
-            margin: 10px 0;
-            font-size: 16px;
-        }
-
         .modal-content button {
             background-color: #FF69B4;
             color: #fff;
@@ -127,26 +125,6 @@
             cursor: pointer;
         }
 
-        .modal-content button:hover {
-            background-color: #FF1493;
-        }
-
-        .close-modal {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: none;
-            border: none;
-            font-size: 18px;
-            cursor: pointer;
-            color: #333;
-        }
-
-        .close-modal:hover {
-            color: #FF69B4;
-        }
-
-        /* Quiz Section Styles */
         .quiz-container {
             background-color: #2C3E50;
             padding: 20px;
@@ -154,7 +132,6 @@
             color: #fff;
             max-width: 600px;
             margin: 40px auto;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
         }
 
         .quiz-container h2 {
@@ -162,279 +139,59 @@
             margin-bottom: 20px;
         }
 
-        .quiz-question {
+        .timer {
+            text-align: center;
             font-size: 18px;
             margin-bottom: 15px;
-        }
-
-        .quiz-options button {
-            display: block;
-            width: 100%;
-            padding: 10px;
-            margin: 5px 0;
-            font-size: 16px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            background-color: #FF69B4;
-            color: #fff;
-            transition: background-color 0.3s;
-        }
-
-        .quiz-options button:hover {
-            background-color: #FF1493;
-        }
-
-        .quiz-feedback {
-            margin-top: 15px;
-            font-size: 16px;
-            text-align: center;
-        }
-
-        .quiz-score {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 18px;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 600px) {
-            header input[type="text"] {
-                width: 80%;
-            }
-
-            .quiz-container {
-                width: 90%;
-            }
         }
     </style>
 </head>
 <body>
-
 <header>
     <h1>Movie Search</h1>
-    <input type="text" id="search-bar" placeholder="Search for a movie..." onkeyup="searchMovies()">
+    <input type="text" id="search-bar" placeholder="Search movies..." onkeyup="searchMovies()">
+    <select id="genre-filter" onchange="filterByGenre()">
+        <option value="">All Genres</option>
+        <option value="Action">Action</option>
+        <option value="Comedy">Comedy</option>
+        <option value="Drama">Drama</option>
+    </select>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
 </header>
 
 <div class="container">
     <ul class="movie-list" id="movie-list"></ul>
+    <div class="pagination" id="pagination"></div>
 </div>
 
 <!-- Modal -->
 <div class="modal" id="movie-modal">
     <div class="modal-content">
-        <button class="close-modal" onclick="closeModal()">X</button>
         <h2 id="modal-title">Movie Title</h2>
-        <p id="modal-details">Genre: Action</p>
-        <p id="modal-size">File Size: 700MB</p>
-        <p id="modal-quality">Quality: Full HD</p> <!-- Added quality field -->
-        <button id="download-button" onclick="downloadMovie()">Download</button>
+        <p id="modal-genre">Genre: Action</p>
+        <p id="modal-details">File Size: 700MB | Quality: Full HD</p>
+        <h3>Similar Movies:</h3>
+        <ul id="similar-movies"></ul>
+        <button onclick="closeModal()">Close</button>
     </div>
 </div>
 
 <!-- Quiz Section -->
 <div class="quiz-container">
-    <h2>Movie Quiz: Test Your Knowledge!</h2>
-    <div id="quiz">
-        <div id="question-box">
-            <p id="question">Loading question...</p>
-            <div class="quiz-options">
-                <button onclick="checkAnswer('A')" id="optionA">Option A</button>
-                <button onclick="checkAnswer('B')" id="optionB">Option B</button>
-                <button onclick="checkAnswer('C')" id="optionC">Option C</button>
-                <button onclick="checkAnswer('D')" id="optionD">Option D</button>
-            </div>
-        </div>
-        <div class="quiz-feedback" id="quiz-feedback"></div>
-        <div class="quiz-score" id="quiz-score">Your Score: 0</div>
+    <h2>Movie Quiz</h2>
+    <div class="timer" id="timer">Time Left: 15s</div>
+    <p id="question">Loading...</p>
+    <div>
+        <button onclick="checkAnswer('A')">Option A</button>
+        <button onclick="checkAnswer('B')">Option B</button>
+        <button onclick="checkAnswer('C')">Option C</button>
+        <button onclick="checkAnswer('D')">Option D</button>
     </div>
+    <p id="feedback"></p>
 </div>
 
 <script>
-    // Movie List Functionality
-    let allMovies = []; // To hold all movies from the JSON
-    const defaultMovieCount = 5; // Number of movies to display by default
-
-    fetch('movies.json')
-        .then(response => response.json())
-        .then(data => {
-            allMovies = data; // Save all movies for later use
-            renderMovies(allMovies.slice(0, defaultMovieCount)); // Show only the first 5 movies
-        })
-        .catch(err => console.error("Error loading movie data:", err));
-
-    function renderMovies(movies) {
-        const movieList = document.getElementById('movie-list');
-        if (movies.length === 0) {
-            movieList.innerHTML = "<p>No movies found.</p>";
-        } else {
-            movieList.innerHTML = movies.map((movie, index) => `
-                <li onclick="showMovieDetails(${index})">
-                    <img src="${movie.image || 'https://via.placeholder.com/50x75'}" alt="${movie.title}">
-                    <a href="javascript:void(0)">${movie.title}</a>
-                </li>
-            `).join('');
-        }
-    }
-
-    function searchMovies() {
-        const query = document.getElementById('search-bar').value.toLowerCase();
-        if (query === "") {
-            renderMovies(allMovies.slice(0, defaultMovieCount)); // Show default 5 movies if search is empty
-        } else {
-            const filteredMovies = allMovies.filter(movie => movie.title.toLowerCase().includes(query));
-            renderMovies(filteredMovies); // Show matching movies only
-        }
-    }
-
-    function showMovieDetails(index) {
-        const movie = allMovies[index];
-        document.getElementById('modal-title').textContent = movie.title;
-        document.getElementById('modal-details').textContent = `Genre: ${movie.genre}`;
-        document.getElementById('modal-size').textContent = `File Size: ${movie.size || 'Unknown'}`;
-        document.getElementById('modal-quality').textContent = `Quality: ${movie.quality || 'Not Available'}`; // Display quality
-        document.getElementById('download-button').setAttribute('data-link', movie.link);
-        document.getElementById('movie-modal').style.display = "flex";
-    }
-
-    function closeModal() {
-        document.getElementById('movie-modal').style.display = "none";
-    }
-
-    function downloadMovie() {
-        const link = document.getElementById('download-button').getAttribute('data-link');
-        window.open(link, "_blank");
-    }
-
-    // Quiz Functionality
-    const quizQuestions = [
-        {
-            question: "Which movie won Best Picture in 2020?",
-            options: {
-                A: "Parasite",
-                B: "Joker",
-                C: "1917",
-                D: "Once Upon a Time in Hollywood"
-            },
-            correct: "A"
-        },
-        {
-            question: "Which actor played Iron Man in the Marvel series?",
-            options: {
-                A: "Chris Hemsworth",
-                B: "Robert Downey Jr.",
-                C: "Chris Evans",
-                D: "Mark Ruffalo"
-            },
-            correct: "B"
-        },
-        {
-            question: "What is the highest-grossing movie of all time?",
-            options: {
-                A: "Avatar",
-                B: "Titanic",
-                C: "Avengers: Endgame",
-                D: "Star Wars: The Force Awakens"
-            },
-            correct: "A"
-        },
-        {
-            question: "Which movie features the song 'My Heart Will Go On'?",
-            options: {
-                A: "The Lion King",
-                B: "Frozen",
-                C: "Titanic",
-                D: "Beauty and the Beast"
-            },
-            correct: "C"
-        },
-        {
-            question: "In which movie does Leonardo DiCaprio play a character named Jack?",
-            options: {
-                A: "Inception",
-                B: "The Revenant",
-                C: "Titanic",
-                D: "The Wolf of Wall Street"
-            },
-            correct: "C"
-        }
-    ];
-
-    let currentQuizIndex = 0;
-    let quizScore = 0;
-
-    function loadQuizQuestion() {
-        const currentQuiz = quizQuestions[currentQuizIndex];
-        document.getElementById('question').textContent = currentQuiz.question;
-        document.getElementById('optionA').textContent = currentQuiz.options.A;
-        document.getElementById('optionB').textContent = currentQuiz.options.B;
-        document.getElementById('optionC').textContent = currentQuiz.options.C;
-        document.getElementById('optionD').textContent = currentQuiz.options.D;
-        document.getElementById('quiz-feedback').textContent = "";
-    }
-
-    function checkAnswer(selectedOption) {
-        const currentQuiz = quizQuestions[currentQuizIndex];
-        const feedback = document.getElementById('quiz-feedback');
-        if (selectedOption === currentQuiz.correct) {
-            quizScore += 10; // Increment score
-            feedback.textContent = "Correct!";
-            feedback.style.color = "#4CAF50";
-        } else {
-            feedback.textContent = `Wrong! The correct answer was "${currentQuiz.options[currentQuiz.correct]}".`;
-            feedback.style.color = "#FF5252";
-        }
-
-        // Update score display
-        document.getElementById('quiz-score').textContent = `Your Score: ${quizScore}`;
-
-        // Move to next question after a short delay
-        currentQuizIndex++;
-        if (currentQuizIndex < quizQuestions.length) {
-            setTimeout(loadQuizQuestion, 1500);
-        } else {
-            setTimeout(showFinalScore, 1500);
-        }
-    }
-
-    function showFinalScore() {
-        const quizContainer = document.querySelector('.quiz-container');
-        quizContainer.innerHTML = `
-            <h2>Quiz Finished!</h2>
-            <p>Your final score is <strong>${quizScore}</strong> out of ${quizQuestions.length * 10}.</p>
-            <button onclick="restartQuiz()">Restart Quiz</button>
-        `;
-    }
-
-    function restartQuiz() {
-        currentQuizIndex = 0;
-        quizScore = 0;
-        const quizContainer = document.querySelector('.quiz-container');
-        quizContainer.innerHTML = `
-            <h2>Movie Quiz: Test Your Knowledge!</h2>
-            <div id="quiz">
-                <div id="question-box">
-                    <p id="question">Loading question...</p>
-                    <div class="quiz-options">
-                        <button onclick="checkAnswer('A')" id="optionA">Option A</button>
-                        <button onclick="checkAnswer('B')" id="optionB">Option B</button>
-                        <button onclick="checkAnswer('C')" id="optionC">Option C</button>
-                        <button onclick="checkAnswer('D')" id="optionD">Option D</button>
-                    </div>
-                </div>
-                <div class="quiz-feedback" id="quiz-feedback"></div>
-                <div class="quiz-score" id="quiz-score">Your Score: 0</div>
-            </div>
-        `;
-        loadQuizQuestion();
-    }
-
-    // Initialize Quiz on Page Load
-    window.onload = loadQuizQuestion;
+    // Add your JavaScript functions here: pagination, quiz timer, theme toggle, etc.
 </script>
-
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6540072198059130"
-     crossorigin="anonymous"></script>
 </body>
 </html>
-
