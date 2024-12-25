@@ -146,30 +146,32 @@
         const defaultPanelCount = 5; // Default number of panels
 
         // Fetch panels data
-        fetch('panels.json') // Replace 'panels.json' with your data file
-            .then(response => response.json())
+        fetch('panels.json') // Ensure panels.json is in the same folder as this HTML file
+            .then(response => {
+                if (!response.ok) throw new Error('Failed to load JSON file.');
+                return response.json();
+            })
             .then(data => {
                 allPanels = data;
                 renderPanels(allPanels.slice(0, defaultPanelCount)); // Show first 5 panels
             })
-            .catch(err => console.error("Error loading panel data:", err));
+            .catch(err => {
+                console.error("Error loading panel data:", err);
+                document.getElementById('panel-list').innerHTML = "<p>Error loading panels. Please try again later.</p>";
+            });
 
         // Render panels dynamically
         function renderPanels(panels) {
             const panelList = document.getElementById('panel-list');
-            if (panels.length === 0) {
-                panelList.innerHTML = "<p>No panels found.</p>";
-            } else {
-                panelList.innerHTML = panels.map(panel => `
-                    <li onclick="openPopup('${panel.title}', '${panel.link}')">
-                        <img src="${panel.image || 'https://via.placeholder.com/100x100'}" alt="${panel.title}">
-                        <p>${panel.title}</p>
-                    </li>
-                `).join('');
-            }
+            panelList.innerHTML = panels.map(panel => `
+                <li onclick="openPopup('${panel.title}', '${panel.link}')">
+                    <img src="${panel.image || 'https://via.placeholder.com/100x100'}" alt="${panel.title}">
+                    <p>${panel.title}</p>
+                </li>
+            `).join('');
         }
 
-        // Open popup with panel details
+        // Open popup
         function openPopup(title, link) {
             document.getElementById('popup-title').innerText = title;
             document.getElementById('popup-download').href = link;
@@ -186,14 +188,9 @@
         // Search functionality
         function searchPanels() {
             const query = document.getElementById('search-bar').value.toLowerCase();
-            if (query === "") {
-                renderPanels(allPanels.slice(0, defaultPanelCount)); // Show default panels
-            } else {
-                const filteredPanels = allPanels.filter(panel => panel.title.toLowerCase().includes(query));
-                renderPanels(filteredPanels);
-            }
+            const filteredPanels = allPanels.filter(panel => panel.title.toLowerCase().includes(query));
+            renderPanels(filteredPanels);
         }
     </script>
-
 </body>
 </html>
