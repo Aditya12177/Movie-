@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movie Gallery</title>
+    <title>Panel Download Website</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
         body {
@@ -39,7 +39,7 @@
             padding: 20px;
         }
 
-        .movie-list {
+        .panel-list {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
@@ -48,91 +48,152 @@
             list-style: none;
         }
 
-        .movie-list li {
-            width: 100%;
-            max-width: 350px;
+        .panel-list li {
+            width: 120px;
             text-align: center;
             background-color: #2C3E50;
             border-radius: 10px;
             padding: 10px;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
             transition: transform 0.3s ease;
+            cursor: pointer;
         }
 
-        .movie-list li:hover {
+        .panel-list li:hover {
             transform: scale(1.05);
         }
 
-        .movie-list li img {
-            width: 100%;
-            height: 200px;
+        .panel-list li img {
+            width: 100px;
+            height: 100px;
             border-radius: 10px;
             object-fit: cover;
         }
 
-        .movie-list li p {
+        /* Popup window styles */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            padding: 20px;
+            background: #2C3E50;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+            z-index: 1001;
+            text-align: center;
+        }
+
+        .popup button {
+            padding: 10px 20px;
             margin-top: 10px;
-            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            background-color: #FF69B4;
+            color: white;
+            cursor: pointer;
+        }
+
+        .popup button:hover {
+            background-color: #FF1493;
+        }
+
+        .popup-close {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            cursor: pointer;
+            font-size: 18px;
             color: #fff;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>Movie Gallery</h1>
-        <input type="text" id="search-bar" placeholder="Search for a movie..." onkeyup="searchMovies()">
+        <h1>Panel Download Website</h1>
+        <input type="text" id="search-bar" placeholder="Search for a panel..." onkeyup="searchPanels()">
     </header>
 
     <div class="container">
-        <ul class="movie-list" id="movie-list"></ul>
+        <ul class="panel-list" id="panel-list"></ul>
+    </div>
+
+    <!-- Popup window -->
+    <div class="overlay" id="overlay" onclick="closePopup()"></div>
+    <div class="popup" id="popup">
+        <span class="popup-close" onclick="closePopup()">✖</span>
+        <h2 id="popup-title"></h2>
+        <a id="popup-download" href="#" download>
+            <button>Download</button>
+        </a>
     </div>
 
     <script>
-        let allMovies = []; // To hold all movies from the JSON
-        const defaultMovieCount = 5; // Number of movies to display by default
+        let allPanels = [];
+        const defaultPanelCount = 5; // Default number of panels
 
-        // Fetch movies from the JSON file
-        fetch('movies.json')
+        // Fetch panels data
+        fetch('panels.json') // Replace 'panels.json' with your data file
             .then(response => response.json())
             .then(data => {
-                allMovies = data; // Save all movies for later use
-                renderMovies(allMovies.slice(0, defaultMovieCount)); // Show only the first 5 movies
+                allPanels = data;
+                renderPanels(allPanels.slice(0, defaultPanelCount)); // Show first 5 panels
             })
-            .catch(err => console.error("Error loading movie data:", err));
+            .catch(err => console.error("Error loading panel data:", err));
 
-        // Render movies dynamically
-        function renderMovies(movies) {
-            const movieList = document.getElementById('movie-list');
-            if (movies.length === 0) {
-                movieList.innerHTML = "<p>No movies found.</p>";
+        // Render panels dynamically
+        function renderPanels(panels) {
+            const panelList = document.getElementById('panel-list');
+            if (panels.length === 0) {
+                panelList.innerHTML = "<p>No panels found.</p>";
             } else {
-                movieList.innerHTML = movies.map(movie => `
-                    <li>
-                        <a href="${movie.link}" target="_blank">
-                            <img src="${movie.image || 'https://via.placeholder.com/350x200'}" alt="${movie.title}">
-                            <p>${movie.title}</p>
-                        </a>
+                panelList.innerHTML = panels.map(panel => `
+                    <li onclick="openPopup('${panel.title}', '${panel.link}')">
+                        <img src="${panel.image || 'https://via.placeholder.com/100x100'}" alt="${panel.title}">
+                        <p>${panel.title}</p>
                     </li>
                 `).join('');
             }
         }
 
+        // Open popup with panel details
+        function openPopup(title, link) {
+            document.getElementById('popup-title').innerText = title;
+            document.getElementById('popup-download').href = link;
+            document.getElementById('popup').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+        }
+
+        // Close popup
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        }
+
         // Search functionality
-        function searchMovies() {
+        function searchPanels() {
             const query = document.getElementById('search-bar').value.toLowerCase();
             if (query === "") {
-                renderMovies(allMovies.slice(0, defaultMovieCount)); // Show default 5 movies if search is empty
+                renderPanels(allPanels.slice(0, defaultPanelCount)); // Show default panels
             } else {
-                const filteredMovies = allMovies.filter(movie => movie.title.toLowerCase().includes(query));
-                renderMovies(filteredMovies); // Show matching movies only
+                const filteredPanels = allPanels.filter(panel => panel.title.toLowerCase().includes(query));
+                renderPanels(filteredPanels);
             }
         }
     </script>
-
-    <script src="https://alwingulla.com/88/tag.min.js" data-zone="119001" async data-cfasync="false"></script>
-
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6540072198059130"
-     crossorigin="anonymous"></script>
 
 </body>
 </html>
