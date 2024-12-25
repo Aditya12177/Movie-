@@ -1,4 +1,14 @@
 [
-    {"title": "Panel 1", "image": "panel1.jpg", "link": "panel1.zip"},
-    {"title": "Panel 2", "image": "panel2.jpg", "link": "panel2.zip"}
+    {
+        "title": "Panel 1",
+        "description": "Download Panel 1 here.",
+        "link": "https://example.com/panel1.zip",
+        "image": "https://via.placeholder.com/100"
+    },
+    {
+        "title": "Panel 2",
+        "description": "Download Panel 2 here.",
+        "link": "https://example.com/panel2.zip",
+        "image": "https://via.placeholder.com/100"
+    }
 ]
