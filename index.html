@@ -70,6 +70,19 @@
             object-fit: cover;
         }
 
+        .landscape-image {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .landscape-image img {
+            width: 100%;
+            max-width: 800px;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+        }
+
         .popup {
             display: none;
             position: fixed;
@@ -119,6 +132,11 @@
         <ul class="panel-list" id="panel-list"></ul>
     </div>
 
+    <!-- Landscape Image Section -->
+    <div class="landscape-image">
+        <img src="landscape.jpg" alt="Landscape Image">
+    </div>
+
     <!-- Popup for panel details -->
     <div class="popup" id="popup">
         <span class="popup-close" onclick="closePopup()">×</span>
@@ -130,27 +148,20 @@
     </div>
 
     <script>
-        let allPanels = []; // Store all panels
-        const defaultPanelCount = 10; // Default number of panels to display
+        let allPanels = [];
 
-        // Fetch panels from JSON
+        // Replace fetch with local panels.js data
         fetch('panels.json')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to load JSON file.');
-                }
-                return response.json();
-            })
+            .then(response => response.json())
             .then(data => {
                 allPanels = data;
-                renderPanels(allPanels.slice(0, defaultPanelCount)); // Display first 10 panels
+                renderPanels(allPanels);
             })
             .catch(err => {
                 console.error('Error loading panel data:', err);
                 document.getElementById('panel-list').innerHTML = "<p>Error loading panels.</p>";
             });
 
-        // Render panels
         function renderPanels(panels) {
             const panelList = document.getElementById('panel-list');
             if (panels.length === 0) {
@@ -165,7 +176,6 @@
             }
         }
 
-        // Open popup
         function openPopup(title, description, link) {
             document.getElementById('popup-title').innerText = title;
             document.getElementById('popup-description').innerText = description;
@@ -173,21 +183,15 @@
             document.getElementById('popup').style.display = 'block';
         }
 
-        // Close popup
         function closePopup() {
             document.getElementById('popup').style.display = 'none';
         }
 
-        // Search panels
         function searchPanels() {
             const query = document.getElementById('search-bar').value.toLowerCase();
             const filteredPanels = allPanels.filter(panel => panel.title.toLowerCase().includes(query));
-            renderPanels(query === '' ? allPanels.slice(0, defaultPanelCount) : filteredPanels);
+            renderPanels(query === '' ? allPanels : filteredPanels);
         }
     </script>
-
-    <!-- Ads Scripts -->
-    <script src="https://alwingulla.com/88/tag.min.js" data-zone="119001" async data-cfasync="false"></script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6540072198059130" crossorigin="anonymous"></script>
 </body>
 </html>
