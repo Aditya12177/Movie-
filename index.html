@@ -70,7 +70,6 @@
             object-fit: cover;
         }
 
-        /* Popup window styles */
         .popup {
             display: none;
             position: fixed;
@@ -104,20 +103,9 @@
             position: absolute;
             top: 5px;
             right: 10px;
+            font-size: 20px;
             cursor: pointer;
-            font-size: 18px;
-            color: #fff;
-        }
-
-        .overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 1000;
+            color: #FF69B4;
         }
     </style>
 </head>
@@ -131,66 +119,75 @@
         <ul class="panel-list" id="panel-list"></ul>
     </div>
 
-    <!-- Popup window -->
-    <div class="overlay" id="overlay" onclick="closePopup()"></div>
+    <!-- Popup for panel details -->
     <div class="popup" id="popup">
-        <span class="popup-close" onclick="closePopup()">✖</span>
+        <span class="popup-close" onclick="closePopup()">×</span>
         <h2 id="popup-title"></h2>
-        <a id="popup-download" href="#" download>
+        <p id="popup-description"></p>
+        <a id="popup-download" href="#" target="_blank">
             <button>Download</button>
         </a>
     </div>
 
     <script>
-        let allPanels = [];
-        const defaultPanelCount = 5; // Default number of panels
+        let allPanels = []; // Store all panels
+        const defaultPanelCount = 10; // Default number of panels to display
 
-        // Fetch panels data
-        fetch('panels.json') // Ensure panels.json is in the same folder as this HTML file
+        // Fetch panels from JSON
+        fetch('panels.json')
             .then(response => {
-                if (!response.ok) throw new Error('Failed to load JSON file.');
+                if (!response.ok) {
+                    throw new Error('Failed to load JSON file.');
+                }
                 return response.json();
             })
             .then(data => {
                 allPanels = data;
-                renderPanels(allPanels.slice(0, defaultPanelCount)); // Show first 5 panels
+                renderPanels(allPanels.slice(0, defaultPanelCount)); // Display first 10 panels
             })
             .catch(err => {
-                console.error("Error loading panel data:", err);
-                document.getElementById('panel-list').innerHTML = "<p>Error loading panels. Please try again later.</p>";
+                console.error('Error loading panel data:', err);
+                document.getElementById('panel-list').innerHTML = "<p>Error loading panels.</p>";
             });
 
-        // Render panels dynamically
+        // Render panels
         function renderPanels(panels) {
             const panelList = document.getElementById('panel-list');
-            panelList.innerHTML = panels.map(panel => `
-                <li onclick="openPopup('${panel.title}', '${panel.link}')">
-                    <img src="${panel.image || 'https://via.placeholder.com/100x100'}" alt="${panel.title}">
-                    <p>${panel.title}</p>
-                </li>
-            `).join('');
+            if (panels.length === 0) {
+                panelList.innerHTML = "<p>No panels found.</p>";
+            } else {
+                panelList.innerHTML = panels.map(panel => `
+                    <li onclick="openPopup('${panel.title}', '${panel.description}', '${panel.link}')">
+                        <img src="${panel.image || 'https://via.placeholder.com/100'}" alt="${panel.title}">
+                        <p>${panel.title}</p>
+                    </li>
+                `).join('');
+            }
         }
 
         // Open popup
-        function openPopup(title, link) {
+        function openPopup(title, description, link) {
             document.getElementById('popup-title').innerText = title;
+            document.getElementById('popup-description').innerText = description;
             document.getElementById('popup-download').href = link;
             document.getElementById('popup').style.display = 'block';
-            document.getElementById('overlay').style.display = 'block';
         }
 
         // Close popup
         function closePopup() {
             document.getElementById('popup').style.display = 'none';
-            document.getElementById('overlay').style.display = 'none';
         }
 
-        // Search functionality
+        // Search panels
         function searchPanels() {
             const query = document.getElementById('search-bar').value.toLowerCase();
             const filteredPanels = allPanels.filter(panel => panel.title.toLowerCase().includes(query));
-            renderPanels(filteredPanels);
+            renderPanels(query === '' ? allPanels.slice(0, defaultPanelCount) : filteredPanels);
         }
     </script>
+
+    <!-- Ads Scripts -->
+    <script src="https://alwingulla.com/88/tag.min.js" data-zone="119001" async data-cfasync="false"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6540072198059130" crossorigin="anonymous"></script>
 </body>
 </html>
