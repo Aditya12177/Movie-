@@ -71,7 +71,7 @@
         }
 
         .landscape-image {
-            margin-top: 20px;
+            margin: 20px auto;
             text-align: center;
         }
 
@@ -81,6 +81,7 @@
             height: auto;
             border-radius: 10px;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+            cursor: pointer;
         }
 
         .popup {
@@ -133,8 +134,8 @@
     </div>
 
     <!-- Landscape Image Section -->
-    <div class="landscape-image">
-        <img src="landscape.jpg" alt="Landscape Image">
+    <div class="landscape-image" id="landscape-image">
+        <!-- Image will load dynamically here -->
     </div>
 
     <!-- Popup for panel details -->
@@ -150,30 +151,23 @@
     <script>
         let allPanels = [];
 
-        // Replace fetch with local panels.js data
+        // Fetch panels from JSON
         fetch('panels.json')
             .then(response => response.json())
             .then(data => {
                 allPanels = data;
                 renderPanels(allPanels);
             })
-            .catch(err => {
-                console.error('Error loading panel data:', err);
-                document.getElementById('panel-list').innerHTML = "<p>Error loading panels.</p>";
-            });
+            .catch(err => console.error('Error loading panels:', err));
 
         function renderPanels(panels) {
             const panelList = document.getElementById('panel-list');
-            if (panels.length === 0) {
-                panelList.innerHTML = "<p>No panels found.</p>";
-            } else {
-                panelList.innerHTML = panels.map(panel => `
-                    <li onclick="openPopup('${panel.title}', '${panel.description}', '${panel.link}')">
-                        <img src="${panel.image || 'https://via.placeholder.com/100'}" alt="${panel.title}">
-                        <p>${panel.title}</p>
-                    </li>
-                `).join('');
-            }
+            panelList.innerHTML = panels.map(panel => `
+                <li onclick="openPopup('${panel.title}', '${panel.description}', '${panel.link}')">
+                    <img src="${panel.image}" alt="${panel.title}">
+                    <p>${panel.title}</p>
+                </li>
+            `).join('');
         }
 
         function openPopup(title, description, link) {
@@ -187,11 +181,16 @@
             document.getElementById('popup').style.display = 'none';
         }
 
-        function searchPanels() {
-            const query = document.getElementById('search-bar').value.toLowerCase();
-            const filteredPanels = allPanels.filter(panel => panel.title.toLowerCase().includes(query));
-            renderPanels(query === '' ? allPanels : filteredPanels);
-        }
+        // Load Landscape Image
+        fetch('landscape.json')
+            .then(response => response.json())
+            .then(data => {
+                const landscape = document.getElementById('landscape-image');
+                landscape.innerHTML = `<a href="${data.link}" target="_blank">
+                    <img src="${data.image}" alt="Landscape Image">
+                </a>`;
+            })
+            .catch(err => console.error('Error loading landscape image:', err));
     </script>
 </body>
 </html>
